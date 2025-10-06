@@ -29,7 +29,7 @@ pipeline {
             }
             steps {
                 sh '''
-                   grep build/logo.192.png
+                   grep ~build/logo.192.png
                    npm test
                 '''
             }
