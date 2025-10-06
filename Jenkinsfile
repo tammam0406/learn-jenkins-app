@@ -45,7 +45,7 @@ pipeline {
                 sh '''
                    sudo npm install -g server
                    sudo serve -s build &
-                   sleep 20
+                   sleep 10
                    sudo npx playright test 
                 '''
             }
