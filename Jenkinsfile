@@ -43,12 +43,18 @@ pipeline {
             }
             steps {
                 sh '''
-                   sudo npm install -g server
-                   sudo serve -s build &
+                   npm install serve
+                   node_modules/.bin/serve build &
                    sleep 10
-                   sudo npx playright test 
+                   npx playright test --reporter=html 
                 '''
             }
+        }
+    }
+    post {
+        always {
+            junit 'jest-results/junit.xml'
+            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Playwright HTML Report', reportTitles: '', useWrapperFileDirectly: true])
         }
     }
 }
