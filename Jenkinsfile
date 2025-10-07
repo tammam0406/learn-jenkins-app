@@ -55,10 +55,13 @@ pipeline {
 
                     steps {
                         sh '''
+                            set -e
                             npm install serve
                             node_modules/.bin/serve -s build &
+                            SERVE_PID=\$!
                             sleep 10
                             npx playwright test  --reporter=html
+                            kill \$SERVE_PID
                         '''
                     }
 
