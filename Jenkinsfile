@@ -63,7 +63,7 @@ pipeline {
                            npm install serve
                            node_modules/.bin/serve -s build &
                            SERVE_PID=$!
-                           sleep 10
+                           sleep 20
                            npx playwright test --reporter=html
                            kill $SERVE_PID
                         '''
