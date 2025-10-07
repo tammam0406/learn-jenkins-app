@@ -40,7 +40,7 @@ pipeline {
                     steps {
                         sh '''
                             test -f build/index.html
-                            npm test
+                            npm test -- --detectOpenHandles --ci --reporters=default --reporters=jest-junit
                         '''
                     }
                     post {
@@ -53,17 +53,20 @@ pipeline {
                 stage('E2E') {
                     agent {
                         docker {
-                            image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                            image 'mcr.microsoft.com/playwright:latest'
                             reuseNode true
                         }
                     }
 
                     steps {
                         sh '''
+                            set -e
                             npm install serve
                             node_modules/.bin/serve -s build &
+                            SERVE_PID=$!
                             sleep 10
-                            npx playwright test  --reporter=html
+                            npx playwright test --reporter=html
+                            kill $SERVE_PID
                         '''
                     }
 
