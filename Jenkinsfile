@@ -58,10 +58,10 @@ pipeline {
                             set -e
                             npm install serve
                             node_modules/.bin/serve -s build &
-                            SERVE_PID=\$!
+                            SERVE_PID=$!
                             sleep 10
-                            npx playwright test  --reporter=html
-                            kill \$SERVE_PID
+                            npx playwright test --reporter=html
+                            kill $SERVE_PID
                         '''
                     }
 
@@ -75,15 +75,3 @@ pipeline {
         }
     }
 }
-
-let timer;
-beforeEach(() => {
-  timer = setTimeout(() => {}, 1000);
-});
-afterEach(() => {
-  clearTimeout(timer);
-});
-
-test('async test', async () => {
-  await someAsyncFunction();
-});
