@@ -75,3 +75,15 @@ pipeline {
         }
     }
 }
+
+let timer;
+beforeEach(() => {
+  timer = setTimeout(() => {}, 1000);
+});
+afterEach(() => {
+  clearTimeout(timer);
+});
+
+test('async test', async () => {
+  await someAsyncFunction();
+});
