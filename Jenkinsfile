@@ -92,7 +92,12 @@ pipeline {
                     node_modules/.bin/netlify --version
                     echo "Deploying to production. Site ID: $NETLIFY_SITE_ID"
                     node_modules/.bin/netlify status
-                    node_modules/.bin/netlify deploy --dir=build --prod
+                    node_modules/.bin/netlify deploy --dir=build --prod > deploy.log
+                    DEPLOY_URL=$(grep -o 'Website URL:.*' deploy.log | awk '{print $3}')
+                    if [ -n "$DEPLOY_URL" ]; then
+                      echo "Opening $DEPLOY_URL in browser"
+                      "$BROWSER" "$DEPLOY_URL"
+                    fi
                 '''
             }
         }
