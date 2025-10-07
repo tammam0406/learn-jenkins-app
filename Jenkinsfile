@@ -50,6 +50,9 @@ pipeline {
                 }
 
                 stage('E2E') {
+                    options {
+                        timeout(time: 10, unit: 'MINUTES')
+                    }
                     agent {
                         docker {
                             image 'mcr.microsoft.com/playwright:latest'
@@ -64,7 +67,7 @@ pipeline {
                            node_modules/.bin/serve -s build &
                            SERVE_PID=$!
                            sleep 20
-                           npx playwright test --reporter=html
+                           npx playwright test --reporter=html --headless --reporter=line
                            kill $SERVE_PID
                         '''
                     }
