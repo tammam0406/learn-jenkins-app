@@ -57,7 +57,6 @@ pipeline {
                         sh '''
                             set -e
                             npm install serve
-                            npm install --save-dev @babel/plugin-proposal-private-property-in-object
                             node_modules/.bin/serve -s build &
                             SERVE_PID=\$!
                             sleep 10
