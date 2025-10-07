@@ -60,13 +60,13 @@ pipeline {
 
                     steps {
                         sh '''
-                            set -e
-                            npm install serve
-                            node_modules/.bin/serve -s build &
-                            SERVE_PID=$!
-                            sleep 10
-                            npx playwright test --reporter=html
-                            kill $SERVE_PID
+                           set -e
+                           npm install serve
+                           node_modules/.bin/serve -s build &
+                           SERVE_PID=$!
+                           sleep 10
+                           npx playwright test --reporter=html
+                           kill $SERVE_PID
                         '''
                     }
 
@@ -88,20 +88,11 @@ pipeline {
             }
             steps {
                 sh '''
-                    npm install serve
-                    node_modules/.bin/serve -s build &
-                    sleep 10
-                    npx playwright test  --reporter=html
                     npm install netlify-cli
                     node_modules/.bin/netlify --version
                     echo "Deploying to production. Site ID: $NETLIFY_SITE_ID"
                     node_modules/.bin/netlify status
-                    node_modules/.bin/netlify deploy --dir=build --prod > deploy.log
-                    DEPLOY_URL=$(grep -o 'Website URL:.*' deploy.log | awk '{print $3}')
-                    if [ -n "$DEPLOY_URL" ]; then
-                      echo "Opening $DEPLOY_URL in browser"
-                      "$BROWSER" "$DEPLOY_URL"
-                    fi
+                    node_modules/.bin/netlify deploy --dir=build --prod
                 '''
             }
         }
